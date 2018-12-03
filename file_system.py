@@ -18,6 +18,12 @@ class FileSystem:
     def delete(self, name):
         pass
 
+    def move(self, name, new_dir):
+        if self.copy(name, new_dir):
+            if self.delete(name):
+                return True
+            return False
+
     def rename(self, name, new_name):
         poln_name_1 = self.path + '/' + name
         poln_name_2 = self.path + '/' + new_name
@@ -31,7 +37,7 @@ class FileSystem:
         spisok = 0
         self.filter(spisok)
 
-    def rejim(self):
+    def rejim(self, rejim):
         pass
 
     def filter(self, sp):
@@ -44,7 +50,7 @@ class FileSystem:
         except Exception:
             return False
 
-    def new_txt(self):
+    def new_txt(self, name):
         pass
 
     def zapusk(self, name):
