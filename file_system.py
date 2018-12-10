@@ -1,77 +1,88 @@
 import os
+import win32api
+import shutil
 
 
 class FileSystem:
     def __init__(self, base_path):
-        self.path = base_path
-        self.forms = {}
-        with open('set.txt', 'r') as f:
-            for line in f:
-                i = line.split()
-                self.forms[i[0]] = i[1:]
+        self.discs = win32api.GetLogicalDriveStrings().split("\x00")[:-1]
+        os.chdir(base_path)
+        self.path = os.getcwd()
+        self.base = False
 
     def vpered(self, name):
-        self.path += '/'
-        self.path += name
+        if self.base:
+            self.path = name
+            self.base = False
+            return
+        elif self.path in self.discs:
+            self.path = self.path + name
+        else:
+            self.path = self.path + '\\'[0] + name
 
     def nazad(self):
+        if self.base:
+            return
+        if self.path in self.discs:
+            self.path = ''
+            self.base = True
+            return
+        else:
+            self.path = os.path.split(self.path)[0]
+
+    def remove(self, name):
         try:
-            self.path = '/'.join(self.path.split('/')[:-1])
+            os.remove(self.full_name(name))
             return True
         except Exception:
             return False
-
-    def copy(self, name, new_dir):
-        try:
-            self.copy(self.path + '/' + name, new_dir)
-            return True
-        except Exception:
-            return False
-
-    def delete(self, name):
-        try:
-            os.remove(self.path + '/' + name)
-            return True
-        except Exception:
-            return False
-
-    def move(self, name, new_dir):
-        if self.copy(name, new_dir):
-            if self.delete(name):
-                return True
-        return False
-
-    def rename(self, name, new_name):
-        poln_name_1 = self.path + '/' + name
-        poln_name_2 = self.path + '/' + new_name
-        try:
-            os.rename(poln_name_1, poln_name_2)
-            return True
-        except Exception:
-            return False
-
+    
     def vse(self):
+        if self.base:
+            return self.discs
         spisok = os.listdir(self.path)
         return self.preobr(spisok)
 
-    def rejim(self, rej):
-        with open('set.txt', 'r') as f:
-            
+    def preobr(self, sp):
+        return sp
 
-    def preobr(self, old_sp):
-        new_sp = [abc.split('/')[-1] for abc in old_sp]
-        new_sp2 = []
-        pass
-
-    def new_dir(self, name):
+    def new_papka(self, name):
         try:
-            os.mkdir(self.path + '/' + name)
+            os.mkdir(self.path + '\\'[0] + name)
             return True
         except Exception:
             return False
 
     def new_txt(self, name):
-        pass
+        try:
+            with open(name + '.txt', 'w') as f:
+                pass
+            return True
+        except Exception:
+            return False
+
+    def rename(self, name, new_name):
+        try:
+            os.rename(self.path + '\\'[0] + name,
+                      self.path + '\\'[0] + new_name)
+            return True
+        except Exception:
+            return False
+    
+    def copy(self, name, new_dir):
+        try:
+            shutil.copy2(self.path + '\\'[0] + name, new_dir + '\\'[0] + name)
+            return True
+        except Exception:
+            return False
 
     def open(self, name):
-        os.startfile(self.path + '/' + name)
+        try:
+            if os.path.isfile(self.path + '\\'[0] + name):
+                os.startfile(self.path + '\\'[0] + name)
+                return True
+            self.vpered(name)
+            return True
+        except Exception:
+            return False
+
