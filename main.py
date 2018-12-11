@@ -17,6 +17,8 @@ class Main(QMainWindow, Ui_MainWindow):
         super().setupUi(self)
         self.active = True
         self.name = ''
+        self.all_names_l = []
+        self.all_names_r = []
         self.b = Dialog()
         self.left = FileSystem('C:\\')
         self.right = FileSystem('D:\\')
@@ -39,16 +41,29 @@ class Main(QMainWindow, Ui_MainWindow):
         self.right_table.itemDoubleClicked.connect(self.opened)
 
     def update(self):
+        self.name = ''
         l_fs = self.left.vse()
         r_fs = self.right.vse()
+        if l_fs == 'Vse Ploxo':
+            self.nazad_l()
+            self.b.show()
+            return
+        if r_fs == 'Vse Ploxo':
+            self.nazad_r()
+            self.b.show()
+            return
+        self.all_names_l = [i[2] for i in l_fs]
+        self.all_names_r = [i[2] for i in r_fs]
         len_left = len(l_fs)
         len_right = len(r_fs)
         self.left_table.setRowCount(len_left)
         self.right_table.setRowCount(len_right)
         for i in range(len_left):
-            self.left_table.setItem(i, 0, QTableWidgetItem(l_fs[i]))
+            self.left_table.setItem(i, 0, QTableWidgetItem(l_fs[i][0]))
+            self.left_table.setItem(i, 1, QTableWidgetItem(l_fs[i][1]))
         for i in range(len_right):
-            self.right_table.setItem(i, 0, QTableWidgetItem(r_fs[i]))
+            self.right_table.setItem(i, 0, QTableWidgetItem(r_fs[i][0]))
+            self.right_table.setItem(i, 1, QTableWidgetItem(r_fs[i][1]))
         self.left_table.resizeColumnsToContents()
         self.right_table.resizeColumnsToContents()
         
@@ -74,29 +89,27 @@ class Main(QMainWindow, Ui_MainWindow):
                     self.b.show()
         self.update()
     def dir(self):
-        if self.active:
-            if not(self.left.new_papka('Новая Папка')):
-                for i in range(1, 10001):
-                    if self.left.new_papka('Новая Папка'+str(i)):
-                        break
-        else:
-            if not(self.right.new_papka('Новая Папка')):
-                for i in range(1, 10001):
-                    if self.right.new_papka('Новая Папка'+str(i)):
-                        break
+        text, ok = QInputDialog.getText(self, 'Введите название',
+                                            '', QLineEdit.Normal, '')
+        if ok:
+            if self.active:
+                if not self.left.new_papka(text):
+                    self.b.show()
+            else:
+                if not self.right.new_papka(text):
+                    self.b.show()
         self.update()
 
     def txt(self):
-        if self.active:
-            if not(self.left.new_txt('Новый Файл')):
-                for i in range(1, 10001):
-                    if self.left.new_txt('Новый Файл'+str(i)):
-                        break
-        else:
-            if not(self.right.new_txt('Новый Файл')):
-                for i in range(1, 10001):
-                    if self.right.new_txt('Новый Файл'+str(i)):
-                        break
+        text, ok = QInputDialog.getText(self, 'Введите название',
+                                            '', QLineEdit.Normal, '')
+        if ok:
+            if self.active:
+                if not self.left.new_txt(text):
+                    self.b.show()
+            else:
+                if not self.right.new_txt(text):
+                    self.b.show()
         self.update()
 
     def new_name(self):
@@ -132,11 +145,13 @@ class Main(QMainWindow, Ui_MainWindow):
         self.update()
     
     def get_item_l(self):
-        self.name = self.sender().selectedItems()[0].text()
+        index = self.sender().selectedItems()[0].row()
+        self.name = self.all_names_l[index]
         self.active = True
     
     def get_item_r(self):
-        self.name = self.sender().selectedItems()[0].text()
+        index = self.sender().selectedItems()[0].row()
+        self.name = self.all_names_r[index]
         self.active = False
     
     def nazad_r(self):
