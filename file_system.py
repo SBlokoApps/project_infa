@@ -30,10 +30,15 @@ class FileSystem:
             return
         else:
             self.path = os.path.split(self.path)[0]
-
+    def open_cmd(self):
+        os.chdir(self.path)
+        os.system('cmd')
     def remove(self, name):
         try:
-            os.remove(self.full_name(name))
+            if os.path.isfile(self.path + '\\'[0] + name):
+                os.remove(self.path + '\\'[0] + name)
+            else:
+                shutil.rmtree(self.path + '\\'[0] + name)
             return True
         except Exception:
             return False
@@ -59,7 +64,7 @@ class FileSystem:
         else:
             ef = ef + '  ' * (13 - len(ef))
         return [abc, ef, real]
-    
+            
     def preobr(self, sp):
         spisok2 = []
         for i in sp:
@@ -68,7 +73,7 @@ class FileSystem:
                 continue
             if '.bin' in i.lower() or '.sys' in i.lower():
                 continue
-            if '.dat' in i.lower():
+            if '.dat' in i.lower() or i == '':
                 continue
             if self.path == 'C:\\' and i == 'Documents and Settings':
                 continue
@@ -93,7 +98,7 @@ class FileSystem:
 
     def new_txt(self, name):
         try:
-            with open(name + '.txt', 'w') as f:
+            with open(self.path + '\\'[0] + name, 'w') as f:
                 pass
             return True
         except Exception:
@@ -106,14 +111,30 @@ class FileSystem:
             return True
         except Exception:
             return False
+    def move(self, name, new_dir):
+        if self.copy(name, new_dir):
+            if self.remove(name):
+                return True
+        return False
     
     def copy(self, name, new_dir):
-        try:
-            shutil.copy2(self.path + '\\'[0] + name, new_dir + '\\'[0] + name)
-            return True
-        except Exception:
-            return False
-
+        if os.path.isfile(self.path + '\\'[0] + name):
+            try:
+                shutil.copy2(self.path + '\\'[0] + name, new_dir + '\\'[0] + name)
+                return True
+            except Exception:
+                return False
+        else:
+            try:
+                shutil.copytree(self.path + '\\'[0] + name, new_dir + '\\'[0] + name)
+                return True
+            except Exception:
+                self.vpered(name)
+                new_dir = new_dir + '\\'[0] + name
+                for i in self.vse():
+                    self.copy(i[2], new_dir)
+                self.nazad()    
+                return True
     def open(self, name):
         try:
             if os.path.isfile(self.path + '\\'[0] + name):

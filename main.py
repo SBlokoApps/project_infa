@@ -7,7 +7,7 @@ from file_system import *
 from Error47 import *
 
 
-class Dialog(QDialog, Ui_Dialog):
+class MyDialog(QDialog, Ui_Dialog):
     def __init__(self):
         super().__init__()
         super().setupUi(self)
@@ -20,18 +20,30 @@ class Main(QMainWindow, Ui_MainWindow):
         self.name = ''
         self.all_names_l = []
         self.all_names_r = []
-        self.b = Dialog()
+        self.error47 = MyDialog()
+        self.error47.label_2.setText('Так получилось')
+        self.dialog_ok = MyDialog()
+        self.dialog_ok.label_2.setText('Завершена')
+        self.dialog_ok.label.setText('Задача')
         self.left = FileSystem('C:\\')
         self.right = FileSystem('D:\\')
         self.left_table.setColumnCount(2)
         self.right_table.setColumnCount(2)
+        self.left_table.setHorizontalHeaderLabels(['Имя', 'Тип'])
+        self.right_table.setHorizontalHeaderLabels(['Имя', 'Тип'])
+        self.left_table.setSortingEnabled(True)
+        self.right_table.setSortingEnabled(True)
+        self.left_table.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.right_table.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.left_table.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.right_table.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.update()
         self.left_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.right_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.n_left.clicked.connect(self.nazad_l)
         self.n_right.clicked.connect(self.nazad_r)
         self.copy.clicked.connect(self.copied)
-        self.dele.clicked.connect(self.delete)
+        self.dele.clicked.connect(self.deleted)
         self.open.clicked.connect(self.new_name)
         self.new_dir.clicked.connect(self.dir)
         self.new_file.clicked.connect(self.txt)
@@ -40,6 +52,7 @@ class Main(QMainWindow, Ui_MainWindow):
         self.move.clicked.connect(self.moved)
         self.left_table.itemDoubleClicked.connect(self.opened)
         self.right_table.itemDoubleClicked.connect(self.opened)
+        self.cmd.clicked.connect(self.open_cmd)
 
     def update(self):
         self.name = ''
@@ -47,11 +60,11 @@ class Main(QMainWindow, Ui_MainWindow):
         r_fs = self.right.vse()
         if l_fs == 'Vse Ploxo':
             self.nazad_l()
-            self.b.show()
+            self.error47.show()
             return
         if r_fs == 'Vse Ploxo':
             self.nazad_r()
-            self.b.show()
+            self.error47.show()
             return
         self.all_names_l = [i[2] for i in l_fs]
         self.all_names_r = [i[2] for i in r_fs]
@@ -75,30 +88,43 @@ class Main(QMainWindow, Ui_MainWindow):
         if self.name != '':
             if self.active:
                 if not self.left.copy(self.name, self.right.path):
-                    self.b.show()
+                    self.error47.show()
+                else:
+                    self.dialog_ok.show()
             else:
                 if not self.right.copy(self.name, self.left.path):
-                    self.b.show()
+                    self.error47.show()
+                else:
+                    self.dialog_ok.show()
         self.update()
     def moved(self):
         if self.name != '':
             if self.active:
                 if not self.left.move(self.name, self.right.path):
-                    self.b.show()
+                    self.error47.show()
+                else:
+                    self.dialog_ok.show()
             else:
                 if not self.right.move(self.name, self.left.path):
-                    self.b.show()
+                    self.error47.show()
+                else:
+                    self.dialog_ok.show()
         self.update()
+    def open_cmd(self):
+        if self.active:
+            self.left.open_cmd()
+        else:
+            self.right.open_cmd()
     def dir(self):
         text, ok = QInputDialog.getText(self, 'Введите название',
                                             '', QLineEdit.Normal, '')
         if ok:
             if self.active:
                 if not self.left.new_papka(text):
-                    self.b.show()
+                    self.error47.show()
             else:
                 if not self.right.new_papka(text):
-                    self.b.show()
+                    self.error47.show()
         self.update()
 
     def txt(self):
@@ -107,10 +133,10 @@ class Main(QMainWindow, Ui_MainWindow):
         if ok:
             if self.active:
                 if not self.left.new_txt(text):
-                    self.b.show()
+                    self.error47.show()
             else:
                 if not self.right.new_txt(text):
-                    self.b.show()
+                    self.error47.show()
         self.update()
 
     def new_name(self):
@@ -120,29 +146,29 @@ class Main(QMainWindow, Ui_MainWindow):
             if ok:
                 if self.active:
                     if not self.left.rename(self.name, text):
-                        self.b.show()
+                        self.error47.show()
                 else:
                     if not self.right.rename(self.name, text):
-                        self.b.show()
+                        self.error47.show()
         self.update()
     
-    def delete(self):
+    def deleted(self):
         if self.name != '':
             if self.active:
                 if not self.left.remove(self.name):
-                    self.b.show()
+                    self.error47.show()
             else:
                 if not self.right.remove(self.name):
-                    self.b.show()
+                    self.error47.show()
         self.update()
     def opened(self):
         if self.name != '':
             if self.active:
                 if not self.left.open(self.name):
-                    self.b.show()
+                    self.error47.show()
             else:
                 if not self.right.open(self.name):
-                    self.b.show()
+                    self.error47.show()
         self.update()
     
     def get_item_l(self):
