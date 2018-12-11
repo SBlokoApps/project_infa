@@ -1,4 +1,4 @@
-# Version 1.0
+# Version 1.1
 from file import *
 from PyQt5.QtWidgets import QMainWindow, QDialog, QLineEdit, QApplication, QTableWidgetItem, QInputDialog, QAbstractItemView
 from PyQt5.QtCore import QSize, Qt

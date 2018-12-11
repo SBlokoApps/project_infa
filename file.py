@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Version 1.0
+# Version 1.1
 # Form implementation generated from reading ui file 'proj1_1.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
