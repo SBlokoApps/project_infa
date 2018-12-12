@@ -30,9 +30,11 @@ class FileSystem:
             return
         else:
             self.path = os.path.split(self.path)[0]
+
     def open_cmd(self):
         os.chdir(self.path)
         os.system('cmd')
+
     def remove(self, name):
         try:
             if os.path.isfile(self.path + '\\'[0] + name):
@@ -42,7 +44,7 @@ class FileSystem:
             return True
         except Exception:
             return False
-    
+
     def vse(self):
         try:
             if self.base:
@@ -64,7 +66,7 @@ class FileSystem:
         else:
             ef = ef + '  ' * (13 - len(ef))
         return [abc, ef, real]
-            
+
     def preobr(self, sp):
         spisok2 = []
         for i in sp:
@@ -84,7 +86,8 @@ class FileSystem:
                     spisok2.append(self.fix_len([i, '-'], i))
                 else:
                     i2 = i.split('.')
-                    spisok2.append(self.fix_len(['.'.join(i2[:-1]), i2[-1]], i))
+                    spisok2.append(self.fix_len(
+                        ['.'.join(i2[:-1]), i2[-1]], i))
             else:
                 spisok2.append(self.fix_len([i, '<dir>'], i))
         return spisok2
@@ -111,30 +114,34 @@ class FileSystem:
             return True
         except Exception:
             return False
+
     def move(self, name, new_dir):
         if self.copy(name, new_dir):
             if self.remove(name):
                 return True
         return False
-    
+
     def copy(self, name, new_dir):
         if os.path.isfile(self.path + '\\'[0] + name):
             try:
-                shutil.copy2(self.path + '\\'[0] + name, new_dir + '\\'[0] + name)
+                shutil.copy2(
+                    self.path + '\\'[0] + name, new_dir + '\\'[0] + name)
                 return True
             except Exception:
                 return False
         else:
             try:
-                shutil.copytree(self.path + '\\'[0] + name, new_dir + '\\'[0] + name)
+                shutil.copytree(
+                    self.path + '\\'[0] + name, new_dir + '\\'[0] + name)
                 return True
             except Exception:
                 self.vpered(name)
                 new_dir = new_dir + '\\'[0] + name
                 for i in self.vse():
                     self.copy(i[2], new_dir)
-                self.nazad()    
+                self.nazad()
                 return True
+
     def open(self, name):
         try:
             if os.path.isfile(self.path + '\\'[0] + name):

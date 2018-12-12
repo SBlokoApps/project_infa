@@ -1,6 +1,7 @@
 # Version 1.1
 from file import *
-from PyQt5.QtWidgets import QMainWindow, QDialog, QLineEdit, QApplication, QTableWidgetItem, QInputDialog, QAbstractItemView
+from PyQt5.QtWidgets import QMainWindow, QDialog, QLineEdit, QAbstractItemView
+from PyQt5.QtWidgets import QApplication, QTableWidgetItem, QInputDialog
 from PyQt5.QtCore import QSize, Qt
 import sys
 from file_system import *
@@ -11,6 +12,7 @@ class MyDialog(QDialog, Ui_Dialog):
     def __init__(self):
         super().__init__()
         super().setupUi(self)
+
 
 class Main(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -80,10 +82,11 @@ class Main(QMainWindow, Ui_MainWindow):
             self.right_table.setItem(i, 1, QTableWidgetItem(r_fs[i][1]))
         self.left_table.resizeColumnsToContents()
         self.right_table.resizeColumnsToContents()
-        
+
     def nazad_l(self):
         self.left.nazad()
         self.update()
+
     def copied(self):
         if self.name != '':
             if self.active:
@@ -97,6 +100,7 @@ class Main(QMainWindow, Ui_MainWindow):
                 else:
                     self.dialog_ok.show()
         self.update()
+
     def moved(self):
         if self.name != '':
             if self.active:
@@ -110,14 +114,16 @@ class Main(QMainWindow, Ui_MainWindow):
                 else:
                     self.dialog_ok.show()
         self.update()
+
     def open_cmd(self):
         if self.active:
             self.left.open_cmd()
         else:
             self.right.open_cmd()
+
     def dir(self):
-        text, ok = QInputDialog.getText(self, 'Введите название',
-                                            '', QLineEdit.Normal, '')
+        text, ok = QInputDialog.getText(
+            self, 'Введите название', '', QLineEdit.Normal, '')
         if ok:
             if self.active:
                 if not self.left.new_papka(text):
@@ -128,8 +134,8 @@ class Main(QMainWindow, Ui_MainWindow):
         self.update()
 
     def txt(self):
-        text, ok = QInputDialog.getText(self, 'Введите название',
-                                            '', QLineEdit.Normal, '')
+        text, ok = QInputDialog.getText(
+            self, 'Введите название', '', QLineEdit.Normal, '')
         if ok:
             if self.active:
                 if not self.left.new_txt(text):
@@ -151,7 +157,7 @@ class Main(QMainWindow, Ui_MainWindow):
                     if not self.right.rename(self.name, text):
                         self.error47.show()
         self.update()
-    
+
     def deleted(self):
         if self.name != '':
             if self.active:
@@ -161,6 +167,7 @@ class Main(QMainWindow, Ui_MainWindow):
                 if not self.right.remove(self.name):
                     self.error47.show()
         self.update()
+
     def opened(self):
         if self.name != '':
             if self.active:
@@ -170,21 +177,21 @@ class Main(QMainWindow, Ui_MainWindow):
                 if not self.right.open(self.name):
                     self.error47.show()
         self.update()
-    
+
     def get_item_l(self):
         index = self.sender().selectedItems()[0].row()
         self.name = self.all_names_l[index]
         self.active = True
-    
+
     def get_item_r(self):
         index = self.sender().selectedItems()[0].row()
         self.name = self.all_names_r[index]
         self.active = False
-    
+
     def nazad_r(self):
         self.right.nazad()
         self.update()
-        
+
 
 app = QApplication(sys.argv)
 a = Main()

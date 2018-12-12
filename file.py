@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -104,8 +105,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow",
-                                             "InFA - Individual File Assistant"))
+        MainWindow.setWindowTitle(
+            _translate("MainWindow", "InFA - Individual File Assistant"))
         self.copy.setText(_translate("MainWindow", "Копировать"))
         self.move.setText(_translate("MainWindow", "Переместить"))
         self.dele.setText(_translate("MainWindow", "Удалить"))
@@ -115,4 +116,3 @@ class Ui_MainWindow(object):
         self.new_file.setText(_translate("MainWindow", "Новый файл"))
         self.n_left.setText(_translate("MainWindow", ".....НАЗАД....."))
         self.n_right.setText(_translate("MainWindow", ".....НАЗАД....."))
-

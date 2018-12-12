@@ -8,6 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -15,7 +16,8 @@ class Ui_Dialog(object):
         self.B_OK = QtWidgets.QDialogButtonBox(Dialog)
         self.B_OK.setGeometry(QtCore.QRect(30, 180, 211, 32))
         self.B_OK.setOrientation(QtCore.Qt.Horizontal)
-        self.B_OK.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.B_OK.setStandardButtons(
+            QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
         self.B_OK.setObjectName("B_OK")
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(30, 10, 271, 101))
@@ -41,4 +43,3 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.label.setText(_translate("Dialog", "ОШИБКА"))
         self.label_2.setText(_translate("Dialog", "№47"))
-
