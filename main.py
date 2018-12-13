@@ -60,6 +60,7 @@ class Main(QMainWindow, Ui_MainWindow):
         self.name = ''
         l_fs = self.left.vse()
         r_fs = self.right.vse()
+        print(l_fs)
         if l_fs == 'Vse Ploxo':
             self.nazad_l()
             self.error47.show()
