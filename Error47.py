@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Version 1.1
+# Version 1.2
 # Form implementation generated from reading ui file 'Error#47.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
