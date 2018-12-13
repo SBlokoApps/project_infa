@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Version 1.2
+# Version 1.3
 # Form implementation generated from reading ui file 'Error#47.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
@@ -9,6 +9,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
+# Просто класс диалогового окна из 2 кнопок и 2 текстов
+# Нечего коментировать
+# 2 кнопки создают иллюзию выбора, но обе просто закрывают окно
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
