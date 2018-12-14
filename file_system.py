@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Version 1.3
+# Version 1.31
 import os # Импортирует всё, что надо
 import win32api
 import shutil
@@ -26,7 +26,7 @@ class FileSystem: # Класс файловой системы
     def nazad(self): # Перемещение назад по дереву каталога
         if self.base: # Если мы в списке дисков, назад не уйти
             return True
-        if self.path in self.discs or self.path[:4] not in self.discs:
+        if self.path in self.discs or self.path[:3] not in self.discs:
             # Если мы в корне диска или диск не существует(полезно при запуске,
             # если диска С или Д нет), переходим назад
             self.path = '' 

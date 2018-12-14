@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Version 1.3
+# Version 1.31
 from file import *
 from PyQt5.QtWidgets import QMainWindow, QDialog, QLineEdit, QAbstractItemView
 from PyQt5.QtWidgets import QApplication, QTableWidgetItem, QInputDialog
